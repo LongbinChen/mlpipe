@@ -1,0 +1,12 @@
+version: 1.0
+jobs:
+
+    kaggle_submit:
+        module: durian/module/kaggle_submission
+        input: 
+            submission.csv: file://kaggle_toxic/data/sample_submission.csv
+        output: {}
+        parameters:
+            competition: jigsaw-toxic-comment-classification-challenge
+            message: best_run
+

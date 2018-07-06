@@ -1,0 +1,53 @@
+version: 1.0
+jobs:
+
+    kaggle_download_train:
+        module: durian/module/kaggle_download
+        input: {}
+        output: 
+            download_file: train.csv.zip
+        parameters:
+            competition: jigsaw-toxic-comment-classification-challenge
+            file: train.csv.zip
+
+    kaggle_unzip_train:
+        module: durian/module/unzip
+        input:
+            zipfile.zip: train.csv.zip
+        output: 
+            unzipfile: train.csv
+        parameters: {}
+    
+
+    kaggle_download_test:
+        module: durian/module/kaggle_download
+        input: {}
+        output: 
+            download_file: test.csv.zip
+        parameters:
+            competition: jigsaw-toxic-comment-classification-challenge
+            file: test.csv.zip
+    kaggle_unzip_test:
+        module: durian/module/unzip
+        input:
+            zipfile.zip: test.csv.zip
+        output: 
+            unzipfile: test.csv
+        parameters: {}
+
+    kaggle_download_sample_submission:
+        module: durian/module/kaggle_download
+        input: {}
+        output: 
+            download_file: sample_submission.csv.zip
+        parameters:
+            competition: jigsaw-toxic-comment-classification-challenge
+            file: sample_submission.csv.zip
+
+    kaggle_unzip_sample:
+        module: durian/module/unzip
+        input:
+            zipfile.zip: sample_submission.csv.zip
+        output: 
+            unzipfile: sample_submission.csv
+        parameters: {}        

@@ -1,0 +1,13 @@
+input:
+    local_file:
+        type: file
+        datafile: true
+
+output: {}
+
+parameters:
+    s3_path:
+       type: string
+    
+
+cmd: python -m durian.module.upload_to_s3  local_file s3_path

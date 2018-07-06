@@ -1,0 +1,6 @@
+parameters: {}
+input_from_job_config: true
+output_from_job_config: true
+cmd: python -m durian.module.find_min --config _default_config
+  
+

@@ -1,0 +1,10 @@
+input: 
+    zipfile.zip:
+      type: file
+      datafile: true
+output: 
+    unzipfile:
+        type: file
+        datafile: true
+
+cmd: unzip zipfile.zip -d unzip_d && mv unzip_d/* unzipfile

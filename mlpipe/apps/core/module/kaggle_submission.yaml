@@ -1,0 +1,17 @@
+input: 
+  submission.csv:
+    type: file
+    datafile: true
+
+output: 
+    submit_result:
+        type: file
+        datafile: true
+ 
+parameters:
+    competition:
+        type: string
+    message:
+        type: string
+
+cmd: kaggle competitions submit -c competition -f submission.csv -m message

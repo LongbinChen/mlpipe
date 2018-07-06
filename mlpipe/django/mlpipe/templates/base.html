@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+
+{% load static %}
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="{% static 'css/bootstrap-starter.css' %}" rel="stylesheet">
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet" media="screen">
+    <link href="{% static 'css/bootstrap-responsive.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/bootstrap-glyphicons.css' %}" rel="stylesheet">
+    <link href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700" rel="stylesheet">
+
+    <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+<!--<script src="{% static 'js/jquery-ui-1.12.1/jquery-ui.js' %}"></script> -->
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="{% static 'css/themes/default/style.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'jsPlumb/css/jsplumbtoolkit-defaults.css' %}">
+    <link rel="stylesheet" href="{% static 'jsPlumb/css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'jsPlumb/css/jsplumbtoolkit-demo.css' %}">
+    <link rel="stylesheet" href="{% static 'jsPlumb/css/demo.css' %}">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    
+    <script src="{% static 'js/jsplumb.min.js' %}"></script>
+    <title>Durian - {% block title %}How to Tango with Django!{% endblock %}</title>
+</head>
+
+<body>
+
+  <div class="navbar navbar-inverse navbar-fixed-top">
+     <div class="navbar-inner">
+         <div class="container">
+             <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                 <span class="icon-bar"></span>
+                 <span class="icon-bar"></span>
+                 <span class="icon-bar"></span>
+             </button>
+             <a class="brand" href="/rango/">Durian</a>
+
+             <div class="nav-collapse collapse">
+                 <ul class="nav pull-right">
+                     {% if user.is_authenticated %}
+                      <li class="navbar-text">Welcome, {{ user.username }}!</li>
+                      <li><a href="/rango/logout/">Logout</a></li>
+                     {% else %}
+                      <li><a href="/rango/register/">Register</a></li>
+                      <li><a href="/rango/login/">Login</a></li>
+                     {% endif %}
+                 </ul>
+                 <ul class="nav">
+                     {% if user.is_authenticated %}
+                      <li><a href="/rango/restricted/">Restricted</a></li>
+                      <li><a href="/rango/add_category/">Add Category</a></li>
+                     {% endif %}
+                     <li><a href="/rango/about/">About</a></li>
+                 </ul>
+             </div>
+             <!--/.nav-collapse -->
+         </div>
+     </div>
+  </div>
+
+        <div id="sidebar-wrapper">
+            <div class="span4">
+                <form class="form-inline space">
+                    <div class="form-group">
+                        <input type="file" id="load-file" class="form-control-file">
+                    </div>
+                    <button type="submit" class="btn btn-outline-primary">Load</button>
+                </form>
+                <button type="submit" onclick="save()" class="btn btn-primary space">Save</button>
+                <div class="well sidebar-nav">
+                {% block sidebar_block %}
+                {% endblock %}
+                </div>
+            </div>
+        </div>
+
+        <div id="param-info">
+
+        </div>
+
+                <!-- demo -->
+            <div class="jtk-demo-canvas canvas-wide flowchart-demo jtk-surface jtk-surface-nopan" id="canvas">
+            </div>
+
+
+        <!-- JS -->
+        <!-- support lib for bezier stuff -->
+        <script src="{% static 'jsPlumb/node_modules/jsBezier/js/jsbezier.js' %}"></script>
+        <!-- event adapter -->
+        <script src="{% static 'jsPlumb/node_modules/mottle/js/mottle.js' %}"></script>
+		<!-- geometry functions -->
+        <script src="{% static 'jsPlumb/node_modules/biltong/src/biltong.js' %}"></script>
+		<!-- drag -->
+        <script src="{% static 'jsPlumb/node_modules/katavorio/src/katavorio.js' %}"></script>
+        <!-- jsplumb util -->
+        <script src="{% static 'jsPlumb/src/util.js' %}"></script>
+        <script src="{% static 'jsPlumb/src/browser-util.js' %}"></script>
+        <!-- main jsplumb engine -->
+        <script src="{% static 'jsPlumb/src/jsPlumb.js' %}"></script>
+        <!-- base DOM adapter -->
+        <script src="{% static 'jsPlumb/src/dom-adapter.js' %}"></script>
+        <script src="{% static 'jsPlumb/src/overlay-component.js' %}"></script>
+        <!-- endpoint -->
+        <script src="{% static 'jsPlumb/src/endpoint.js' %}"></script>
+        <!-- connection -->
+        <script src="{% static 'jsPlumb/src/connection.js' %}"></script>
+        <!-- anchors -->
+        <script src="{% static 'jsPlumb/src/anchors.js' %}"></script>
+        <!-- connectors, endpoint and overlays -->
+        <script src="{% static 'jsPlumb/src/defaults.js' %}"></script>
+        <!-- bezier connectors -->
+        <script src="{% static 'jsPlumb/src/connectors-bezier.js' %}"></script>
+        <!-- state machine connectors -->
+        <script src="{% static 'jsPlumb/src/connectors-statemachine.js' %}"></script>
+        <!-- flowchart connectors -->
+        <script src="{% static 'jsPlumb/src/connectors-flowchart.js' %}"></script>
+        <!-- straight connectors -->
+        <script src="{% static 'jsPlumb/src/connectors-straight.js' %}"></script>
+        <!-- SVG renderer -->
+        <script src="{% static 'jsPlumb/src/renderers-svg.js' %}"></script>
+
+        <!-- no library jsPlumb adapter -->
+        <script src="{% static 'jsPlumb/src/base-library-adapter.js' %}"></script>
+        <script src="{% static 'jsPlumb/src/dom.jsPlumb.js' %}"></script>
+
+        <script src="{% static 'jsPlumb/demo.js' %}"></script>
+
+    <footer>
+        <div class="container">
+     
+        </div>
+    </footer>
+</div>
+    </body>
+</html>

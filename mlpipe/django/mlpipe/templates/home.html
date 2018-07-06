@@ -1,0 +1,253 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block sidebar_block %}
+{% csrf_token %}
+
+
+<div id="tree">
+  </div>
+
+
+
+
+<script src="{% static 'js/jstree.min.js' %}"></script>
+<script src="{% static 'jsPlumb/demo.js' %}"></script>
+<script>
+// https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+function shuffle(arr) {
+    var currentIndex = arr.length, temporaryValue, randomIndex;
+
+    while (currentIndex !== 0) {
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+        
+        temporaryValue = arr[currentIndex];
+        arr[currentIndex] = arr[randomIndex];
+        arr[randomIndex] = temporaryValue;
+    }
+
+    return arr;
+}
+
+
+  $(function () {
+ 
+
+
+var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+}
+$.ajaxSetup({
+    beforeSend: function(xhr, settings) {
+        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+        }
+    }
+});
+
+$('#tree').jstree({
+    'core' : {
+       "check_callback" : true,
+        'data' : {
+            'type': 'post',
+            'contentType': "application/json; charset=utf-8",
+            'url' : '/getmodule',
+            'data' : function (node) {
+                return { 'id' : node.id };
+            }
+        },
+     },
+     "dnd" : {
+         'drop_finish': function (data) {
+         console.log("drop finish");
+        },
+        'drag_check': function (data) {
+            console.log("drag_check");
+            if (data.r.attr('id') == 'RootNode') {
+                return false;
+            } else if (data.r.hasClass('jstree-last')) {
+                return {
+                    after: true,
+                    before: true,
+                    inside: true
+                };
+            } else {
+                return {
+                    after: false,
+                    before: true,
+                    inside: true
+                };
+            }
+        },
+                    "is_draggable" : function(node) {
+                        console.log('is_draggable called: ', node[0]);
+                        console.log('is_draggable called with id: ', node[0].id);
+                        if (node[0].id.endsWith(".yaml")) {
+                            idNum += 1;
+                            var new_node = $('<div>', { class: 'window jtk-node ui-draggable', file: node[0].id, id: 'node'+idNum })
+                                            .html(node[0].text)
+                                            .appendTo('#canvas')
+                            var instance = window.jsp
+
+                            var connectorPaintStyle = {
+                                    strokeWidth: 2,
+                                    stroke: "#61B7CF",
+                                    joinstyle: "round",
+                                    outlineStroke: "white",
+                                    outlineWidth: 2
+                                },
+                            // .. and this is the hover style.
+                                connectorHoverStyle = {
+                                    strokeWidth: 3,
+                                    stroke: "#216477",
+                                    outlineWidth: 5,
+                                    outlineStroke: "white"
+                                },
+                                endpointHoverStyle = {
+                                    fill: "#216477",
+                                    stroke: "#216477"
+                                },
+                            // the definition of source endpoints (the small blue ones)
+                                sourceEndpoint = {
+                                    endpoint: "Dot",
+                                    paintStyle: {
+                                        stroke: "#7AB02C",
+                                        fill: "transparent",
+                                        radius: 7,
+                                        strokeWidth: 1
+                                    },
+                                    isSource: true,
+                                    connector: [ "Flowchart", { stub: [40, 60], gap: 10, cornerRadius: 5, alwaysRespectStubs: true } ],
+                                    connectorStyle: connectorPaintStyle,
+                                    hoverPaintStyle: endpointHoverStyle,
+                                    connectorHoverStyle: connectorHoverStyle,
+                                    dragOptions: {},
+                                    overlays: [
+                                        [ "Label", {
+                                            location: [0.5, 1.5],
+                                            label: "Drag",
+                                            cssClass: "endpointSourceLabel",
+                                            visible:false
+                                        } ]
+                                    ]
+                                },
+                            // the definition of target endpoints (will appear when the user drags a connection)
+                                targetEndpoint = {
+                                    endpoint: "Dot",
+                                    paintStyle: { fill: "#7AB02C", radius: 7 },
+                                    hoverPaintStyle: endpointHoverStyle,
+                                    maxConnections: -1,
+                                    dropOptions: { hoverClass: "hover", activeClass: "active" },
+                                    isTarget: true,
+                                    overlays: [
+                                        [ "Label", { location: [0.5, -0.5], label: "Drop", cssClass: "endpointTargetLabel", visible:false } ]
+                                    ]
+                                },
+                                init = function (connection) {
+                                connection.getOverlay("label").setLabel(connection.sourceId.substring(15) + "-" + connection.targetId.substring(15));
+                            };
+
+                            var sourcePipeEndpoint = JSON.parse(JSON.stringify(sourceEndpoint));
+                            sourcePipeEndpoint.paintStyle.stroke = "#6FD5F7";
+                            var targetPipeEndpoint = JSON.parse(JSON.stringify(targetEndpoint));
+                            targetPipeEndpoint.paintStyle.fill = "#6FD5F7";
+                            var nodepos = ["LeftMiddle", "RightMiddle", "TopCenter", "BottomCenter"];
+                            nodepos = shuffle(nodepos);
+                            // TODO find a way to condense this
+                            if (node[0].type == "pipe") {
+                                instance.addEndpoint($(new_node), sourcePipeEndpoint, {
+                                    connectionsDetachable: true,
+                                    isSource: true,
+                                    anchor: nodepos[0]
+                                });
+                                instance.addEndpoint($(new_node), sourcePipeEndpoint, {
+                                    connectionsDetachable: true,
+                                    isSource: true,
+                                    anchor: nodepos[1]
+                                });
+                                instance.addEndpoint($(new_node), targetPipeEndpoint, {
+                                    connectionsDetachable: true,
+                                    isTarget: true,
+                                    anchor: nodepos[2]
+                                });
+                                instance.addEndpoint($(new_node), targetPipeEndpoint, {
+                                    connectionsDetachable: true,
+                                    isTarget: true,
+                                    anchor: nodepos[3]
+                                });
+                            } else {
+                                instance.addEndpoint($(new_node), sourceEndpoint, {
+                                    connectionsDetachable: true,
+                                    isSource: true,
+                                    anchor: nodepos[0]
+                                });
+                                instance.addEndpoint($(new_node), sourceEndpoint, {
+                                    connectionsDetachable: true,
+                                    isSource: true,
+                                    anchor: nodepos[1]
+                                });
+                                instance.addEndpoint($(new_node), targetEndpoint, {
+                                    connectionsDetachable: true,
+                                    isTarget: true,
+                                    anchor: nodepos[2]
+                                });
+                                instance.addEndpoint($(new_node), targetEndpoint, {
+                                    connectionsDetachable: true,
+                                    isTarget: true,
+                                    anchor: nodepos[3]
+                                });
+                            }
+                            instance.draggable($(new_node))
+
+                            var nodeId = "node"+idNum;
+                            nodes[nodeId] = {}
+                            nodes[nodeId].file = node[0].id;
+                            nodes[nodeId].params = {}
+                            return true;
+                        }
+                        return false;
+                    }
+               },
+      "types": {
+          "pipe": {
+              "icon" : "glyphicon glyphicon-file"
+          }, 
+          "module" : {
+              "icon" : "glyphicon glyphicon-flash"
+          },
+          "data" : {
+              "icon" : "glyphicon glyphicon-briefcase"
+          },
+       },
+    "plugins" : [ "dnd", "types"]
+   });
+
+ $('#makeMeDraggable').draggable( { 
+cursor: 'move',
+ containment: 'document',
+helper: 'clone'
+});
+function myHelper( event ) {
+  return '<div id="draggableHelper">I am a helper - drag me!</div>';
+}
+  $('#diagramContainer').droppable( {
+    drop: handleDropEvent
+  } );
+ 
+function handleDropEvent( event, ui ) {
+  var draggable = ui.draggable;
+  alert( 'The square with ID "' + draggable.attr('id') + '" was dropped onto me!' );
+}
+
+ });
+
+
+
+
+  </script>
+{% endblock %}
+
+</html>

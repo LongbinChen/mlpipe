@@ -1,0 +1,13 @@
+input: {}
+output: 
+    download_file:
+        type: file
+        datafile: true
+ 
+parameters:
+    competition:
+        type: string
+    file:
+        type: string
+
+cmd: kaggle competitions download -c competition -f file -p _tmp_download && mv _tmp_download/%(competition)s/%(file)s download_file

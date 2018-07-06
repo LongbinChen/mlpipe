@@ -1,0 +1,12 @@
+input: {}
+output: 
+    output_folder:
+        type: directory
+        datafile: true
+ 
+parameters:
+    local_folder:
+       type: string
+       default: /
+
+cmd: python -m durian.module.create_local_folder --local_folder local_folder output_folder

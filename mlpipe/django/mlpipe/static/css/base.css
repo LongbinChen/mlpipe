@@ -1,0 +1,14 @@
+html {
+    overflow: hidden;
+    height: 100%;
+}
+
+body {
+    overflow: auto;
+    height: 100%;
+    /*padding-top: 50px;*/
+}
+
+.space {
+    margin-bottom: 10px;
+}

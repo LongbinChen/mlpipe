@@ -2,8 +2,8 @@ import os
 
 from django.core.management.base import BaseCommand, CommandError
 
-from durian.durian_utils import durianutils
-from durian.JobRunner import JobRunner
+from mlpipe.mlpipe_utils import mlpipeutils
+from mlpipe.JobRunner import JobRunner
 
 class Command(BaseCommand):
     help = 'run a job'

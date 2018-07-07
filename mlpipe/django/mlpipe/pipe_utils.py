@@ -9,10 +9,10 @@ import yaml
 from django.contrib.auth.models import Group, User
 from termcolor import colored
 
-import durian.durian_utils as durianutils
-from durian.job_utils import JobRunner, DurianBuildinJob
-from durian.models import Data, Job, JobDependency, Pipe
-#from durian.settings import *
+import mlpipe.mlpipe_utils as mlpipeutils
+from mlpipe.job_utils import JobRunner, mlpipeBuildinJob
+from mlpipe.models import Data, Job, JobDependency, Pipe
+#from mlpipe.settings import *
 
 
 class PipeDeleter(object):
@@ -209,9 +209,9 @@ class PipeParser:
                     v = [v]
                 for va in v:
                     if va in self.output_map:
-                        dp = JobDependency(job_name_src=durianutils.get_full_job_name(
+                        dp = JobDependency(job_name_src=mlpipeutils.get_full_job_name(
                             self.pipe_name, self.output_map[va]),
-                            job_name_tgt=durianutils.get_full_job_name(self.pipe_name, i),
+                            job_name_tgt=mlpipeutils.get_full_job_name(self.pipe_name, i),
                             status=JobDependency.CREATED)
                         dp.save()
                         self.dp_list.append((self.output_map[va], i))
@@ -219,7 +219,7 @@ class PipeParser:
 
     def _generate_job_list(self):
         for idx, j in enumerate(self.job_keys):
-            full_job_name = durianutils.get_full_job_name(self.pipe_name, j)
+            full_job_name = mlpipeutils.get_full_job_name(self.pipe_name, j)
             jj = Job(pipe=self.pp, job_name=full_job_name, module_id=self.pipe["jobs"][j]['module'],
                      module_idx=idx, job_conf=json.dumps(self.pipe["jobs"][j]), status=Job.CREATED)
             jj.save()
@@ -292,7 +292,7 @@ class PipeParser:
     def _get_job_and_data_hash(self, job):
         info_list = []
         module_name = job.module_id
-        module_conf = durianutils.get_config_by_path(module_name)
+        module_conf = mlpipeutils.get_config_by_path(module_name)
         job_conf = json.loads(job.job_conf)
         if module_conf.get("input_from_job_config", None) == True:
             module_conf["input"] = job_conf["input"]
@@ -300,7 +300,7 @@ class PipeParser:
             module_conf["output"] = job_conf["output"]
 
         info_list.append(module_name)
-        code_check_sum = durianutils.get_main_file_md5(module_name)
+        code_check_sum = mlpipeutils.get_main_file_md5(module_name)
         info_list.append(code_check_sum)
         inputs_sorted = job_conf["input"].keys()
         inputs_sorted.sort()
@@ -310,7 +310,7 @@ class PipeParser:
                 input_data_name = [input_data_name]
             for idn in input_data_name:
                 if "://" in idn:
-                    self.data_hash[idn] = durianutils.get_md5(idn)
+                    self.data_hash[idn] = mlpipeutils.get_md5(idn)
                 info_list.append(self.data_hash.get(idn, idn))
         param_conf = job_conf.get("parameters", {})
         param_sorted = param_conf.keys()
@@ -319,7 +319,7 @@ class PipeParser:
             info_list.append(str(param_conf[p]))
 
         # update job hash at the same time
-        job_hash = durianutils.get_md5("\t".join(info_list))
+        job_hash = mlpipeutils.get_md5("\t".join(info_list))
         self._update_job_hash(job, job_hash)
 
         outputs_sorted = job_conf["output"].keys()
@@ -327,27 +327,27 @@ class PipeParser:
         for o in outputs_sorted:
             output_data_name = job_conf["output"][o]
             tmp_str = "\t".join(info_list + [o])
-            output_full_data_path = durianutils.get_full_data_name(self.pipe_name,  output_data_name)
+            output_full_data_path = mlpipeutils.get_full_data_name(self.pipe_name,  output_data_name)
             dd = Data(data_name=output_full_data_path,
-                      data_hash=durianutils.get_md5(tmp_str),
+                      data_hash=mlpipeutils.get_md5(tmp_str),
                       tag="",
                       data_type="",
                       data_size=0,
                       description="intermediate data")
             dd.save()
-            self.data_hash[output_data_name] = durianutils.get_md5(tmp_str)
+            self.data_hash[output_data_name] = mlpipeutils.get_md5(tmp_str)
 
     def load_pipe(self, pipe_id):
         '''
           load pipe from a yaml file
-          the pipe id format is like  [REPO_NAME]::pipe::[PIPE_NAME]], e.g. durianml::pipe::mnist
+          the pipe id format is like  [REPO_NAME]::pipe::[PIPE_NAME]], e.g. mlpipeml::pipe::mnist
         '''
         current_timestamp = int(time.time())
-        pipe_origin = durianutils.get_config_by_path(pipe_id)
+        pipe_origin = mlpipeutils.get_config_by_path(pipe_id)
         if (pipe_origin == None):
             self.info("cant get pipe config from %s " % pipe_id)
             sys.exit(1)
-        lb = DurianBuildinJob()
+        lb = mlpipeBuildinJob()
         pipe = lb.compile_pipe(pipe_origin)
         if (pipe == None):
             return False

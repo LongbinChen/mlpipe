@@ -1,15 +1,15 @@
 # This file contains all local settings
 
-# Durian directory containing cached data, working and storage directories
+# mlpipe directory containing cached data, working and storage directories
 
-durian_directory = '/data/durian'
+mlpipe_directory = '/data/mlpipe'
 resource_directory =  BASE_DIR + "/../" + "resource/"
-working_directory = os.path.join(durian_directory, "working")
-cached_data_directory = os.path.join(durian_directory, "cached_data")
+working_directory = os.path.join(mlpipe_directory, "working")
+cached_data_directory = os.path.join(mlpipe_directory, "cached_data")
 
 local_storage = True
 s3_storage = False
-storage_path = os.path.join(durian_directory, "storage")
+storage_path = os.path.join(mlpipe_directory, "storage")
 
 run_local = True
 DJANGO_BOOTSTRAP_UI_THEME = 'bootswatch-cosmo'
@@ -26,6 +26,6 @@ DATABASES = {
         'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
     }
 }
-DURIAN_MACHINE_NAME = "slave3"
+mlpipe_MACHINE_NAME = "slave3"
 
-resource_directory = '/home/ubuntu/durian/resource'
+resource_directory = '/home/ubuntu/mlpipe/resource'

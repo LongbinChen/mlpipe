@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand, CommandError
-from durian.models import Pipe
-from durian.durian_utils import durianutils
-from durian.JobRunner import JobRunner
+from mlpipe.models import Pipe
+from mlpipe.mlpipe_utils import mlpipeutils
+from mlpipe.JobRunner import JobRunner
 import os
 
 class Command(BaseCommand):

@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand, CommandError
-from durian.pipe_utils import PipeDeleter
+from mlpipe.pipe_utils import PipeDeleter
 import re
 
 class Command(BaseCommand):

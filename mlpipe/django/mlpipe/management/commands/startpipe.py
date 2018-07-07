@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand, CommandError
-from durian.models import Pipe
-from durian.pipe_utils import PipeParser
+from mlpipe.models import Pipe
+from mlpipe.pipe_utils import PipeParser
 import os
 
 class Command(BaseCommand):

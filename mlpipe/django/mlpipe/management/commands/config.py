@@ -1,7 +1,7 @@
 import os
 
 from django.core.management.base import BaseCommand
-from durian.settings import *
+from mlpipe.settings import *
 
 
 class Command(BaseCommand):
@@ -12,7 +12,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         print "============================="
-        print "data_directory: %s " % durian_directory
+        print "data_directory: %s " % mlpipe_directory
         print "    job_directory: %s " % working_directory
         print "    cache_directory: %s " % cached_data_directory
         print "    storage_directory: %s " % storage_path

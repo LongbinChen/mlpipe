@@ -1,8 +1,8 @@
 from django.core.management.base import BaseCommand, CommandError
-from durian.models import Pipe
-from durian.JobRunner import JobRunner
+from mlpipe.models import Pipe
+from mlpipe.JobRunner import JobRunner
 import os
-from durian.settings  import *
+from mlpipe.settings  import *
 
 class Command(BaseCommand):
     help = 'list all available pipe'

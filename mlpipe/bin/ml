@@ -1,0 +1,13 @@
+#!/usr/bin/env python
+#get the path of 
+import os
+import mlpipe
+import mlpipe.django.manage as mlmanage 
+
+#mlpipe_path = os.path.dirname(mlpipe.__file__)
+
+
+#os.path.join(mlpipe_path, 'django', 'manage.py')
+
+
+mlmanage.main()

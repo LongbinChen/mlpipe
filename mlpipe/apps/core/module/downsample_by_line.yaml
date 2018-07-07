@@ -16,4 +16,4 @@ parameters:
        type: int
        default: 1001
 
-cmd: python -m durian.module.downsample_by_line --ratio ratio --random_seed random_seed input_file output_1 
+cmd: python -m mlpipe.module.downsample_by_line --ratio ratio --random_seed random_seed input_file output_1 

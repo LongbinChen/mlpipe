@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand, CommandError
-from durian.models import Pipe
+from mlpipe.models import Pipe
 import os
 
 class Command(BaseCommand):

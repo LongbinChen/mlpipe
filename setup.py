@@ -1,17 +1,40 @@
-import setuptools
+from setuptools import setup, find_packages
+print find_packages(exclude=['mlpipe.django.mlpipe.migrations', 'mlpipe.django.mlpipe.templatetags'])
 
-setuptools.setup(
+
+setup(
     name='mlpipe',
-    version='0.1.0',
+    version='0.1.4',
     author='Longbin Chen',
     author_email='lbchen@gmail.com',
-    packages=['mlpipe',],
+    packages=find_packages(exclude=['mlpipe.django.mlpipe.migrations', 'mlpipe.django.mlpipe.templatetags']),
+    package_data={'':['*.yaml',]},
     scripts=['mlpipe/django/manage.py',],
     license='LICENSE.txt',
     url='https://github.com/LongbinChen/mlpipe',
     description='A toolkit to manage machine learning libraries.',
     long_description=open('README.md').read(),
+    include_package_data=True,
     install_requires=[
-        "Django >= 1.8.1",
+        "astroid==1.6.1",
+        "backports.functools-lru-cache==1.5",
+        "configparser==3.5.0",
+        "Django==1.11.10",
+        "django-bootstrap-ui==0.5.1",
+        "django-bootstrap3==9.1.0",
+        "django-tag-parser==2.1",
+        "dominate==2.1.17",
+        "enum34==1.1.6",
+        "futures==3.2.0",
+        "isort==4.3.3",
+        "lazy-object-proxy==1.3.1",
+        "mccabe==0.6.1",
+        "pycodestyle==2.3.1",
+        "pytz==2018.3",
+        "PyYAML==3.12",
+        "singledispatch==3.4.0.3",
+        "six==1.11.0",
+        "termcolor==1.1.0",
+        "wrapt==1.10.11",
     ],
 )

@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand, CommandError
-from durian.models import Pipe
-import durian.durian_utils as durianutils
-from durian.JobRunner import JobRunner
+from mlpipe.models import Pipe
+import mlpipe.mlpipe_utils as mlpipeutils
+from mlpipe.JobRunner import JobRunner
 import os
 
 class Command(BaseCommand):
@@ -13,4 +13,4 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         if "inputstring" in options: 
-            print durianutils.get_md5(options["inputstring"])
+            print mlpipeutils.get_md5(options["inputstring"])

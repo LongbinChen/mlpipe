@@ -14,9 +14,9 @@ from django.contrib.auth.models import Group, User
 from django.db import connection
 from django.utils import timezone
 
-import durian.durian_utils as durianutils
-from durian.models import Data, Job, JobDependency, Pipe
-from durian.settings import *
+import mlpipe.mlpipe_utils as mlpipeutils
+from mlpipe.models import Data, Job, JobDependency, Pipe
+from mlpipe.settings import *
 
 
 class JobRunner:
@@ -120,7 +120,7 @@ class JobRunner:
         flds = module_name.split("/")
         repo = flds[0]
         repo_directory = os.path.join(resource_directory, repo)
-        durianutils.symlink_force(repo_directory, os.path.join(self.job_dir, repo))
+        mlpipeutils.symlink_force(repo_directory, os.path.join(self.job_dir, repo))
 
     def _link_file_from_storage(self, file_hash, data_name):
         '''
@@ -136,7 +136,7 @@ class JobRunner:
                 print "to %s, doesn't exist. Please make sure the dependent jobs" % storage_location
                 print "are completed" 
                 self._fail_job()
-            durianutils.symlink_force(storage_location, current_location)
+            mlpipeutils.symlink_force(storage_location, current_location)
             self.info("%s -> %s " % (data_name, storage_location))
 
     def _remove_output_softlink(self):
@@ -168,20 +168,20 @@ class JobRunner:
             self._run_command(cmd)
             storage_file = os.path.join(storage_path, file_hash)
             data_file = os.path.join(self.job_dir, data_name)
-            durianutils.symlink_force(storage_file, data_file)
+            mlpipeutils.symlink_force(storage_file, data_file)
             self.info("moved data from %s to %s and soft-linked is created . " % (storage_file, data_file))
         else:
             self.info("non-local storage hasn't been implemented yet.")
 
     def _attach_or_copy_source_data(self, inputfile, filemd5, data_key):
         if inputfile.                                                                                                                                                                                                                                                                       = os.path.join(resource_directory, inputfile.replace("file://", ""))
-            durianutils.symlink_force(filename, os.path.join(self.job_dir, data_key))
+            mlpipeutils.symlink_force(filename, os.path.join(self.job_dir, data_key))
             self.info("%s -> %s" % (data_key, filename))
             return True
 
         if inputfile.startswith("local://"):
             filename = inputfile.replace("file:/", "")
-            durianutils.symlink_force(filename, os.path.join(self.job_dir, data_key))
+            mlpipeutils.symlink_force(filename, os.path.join(self.job_dir, data_key))
             self.info("%s -> %s" % (data_key, filename))
             return True
 
@@ -192,7 +192,7 @@ class JobRunner:
             self._copy_source_data_to_cache(inputfile, filemd5)
 
         # create symbolic link
-        durianutils.symlink_force(cached_data_file, os.path.join(self.job_dir, data_key))
+        mlpipeutils.symlink_force(cached_data_file, os.path.join(self.job_dir, data_key))
         self.info("%s -> %s <--download-- %s " % (data_key, cached_data_file,  inputfile))
 
         return True
@@ -331,7 +331,7 @@ class JobRunner:
         self._create_working_directory()
 
         self.job.status = Job.RUNNING
-        self.job.machine_name = DURIAN_MACHINE_NAME
+        self.job.machine_name = mlpipe_MACHINE_NAME
         self.job.save()
         job = Job.objects.get(job_name=self.job_name)
         self.job = job
@@ -344,7 +344,7 @@ class JobRunner:
         self.job_conf = json.loads(job.job_conf)
         self.pipe_def = json.loads(self.job.pipe.pipe_def)
 
-        module = durianutils.get_config_by_path(self.job.module_id)
+        module = mlpipeutils.get_config_by_path(self.job.module_id)
         self.module = module
 
         self._copy_module_to_working_directory()
@@ -360,7 +360,7 @@ class JobRunner:
         self._update_job_status(self.job, self.job.status)
 
 
-class DurianBuildinJob:
+class mlpipeBuildinJob:
     def _get_loop_parameters(self, loop_param):
         if (len(loop_param) == 0):
             return
@@ -388,7 +388,7 @@ class DurianBuildinJob:
         for pm in self._get_loop_parameters(loop_param):
             job_conf_str = templ_str % pm
             job_conf = yaml.safe_load(job_conf_str)
-            job_h = durianutils.get_md5(json.dumps(job_conf))
+            job_h = mlpipeutils.get_md5(json.dumps(job_conf))
             new_job_name = loop_job_name + "_" + job_h
             self.all_job_hash.append(job_h)
             print(job_conf)
@@ -404,12 +404,12 @@ class DurianBuildinJob:
             agg_job["input"][ip] = [templ["output"][ip] + "_" + j_h for j_h in self.all_job_hash]
         agg_job["output"] = templ["output"]
         agg_job["parameters"] = loop_job_conf["parameters"]
-        agg_job["module"] = "durian/module/find_min"
+        agg_job["module"] = "mlpipe/module/find_min"
         pipe["jobs"][agg_job_name] = agg_job
 
     def compile_pipe(self, pipe):
-        durian_jobs = [j for j in pipe['jobs'] if "/" not in pipe['jobs'][j]['module']]
-        for lj in durian_jobs:
+        mlpipe_jobs = [j for j in pipe['jobs'] if "/" not in pipe['jobs'][j]['module']]
+        for lj in mlpipe_jobs:
             j_c = pipe['jobs'][lj]
             if j_c['module'] == "loop_search":
                 self._loop_search(pipe, lj, j_c)
@@ -425,7 +425,7 @@ if __name__ == '__main__':
     params = parser.parse_args()
     with open(params.pipe_file, "r") as yf:
         pipe = yaml.load(yf)
-        lbin = DurianBuildinJob()
+        lbin = mlpipeBuildinJob()
         compiled_pipe = lbin.compile_pipe(pipe)
         with open(params.compiled_file, "w") as fo:
             yaml.dump(compiled_pipe, fo, default_flow_style=False)

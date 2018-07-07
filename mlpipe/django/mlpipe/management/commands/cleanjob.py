@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand, CommandError
-from durian.models import Pipe
+from mlpipe.models import Pipe
 import os
-from durian.settings  import * 
+from mlpipe.settings  import * 
 
 class Command(BaseCommand):
     help = "make all job which is in 'created' status to be canceled"

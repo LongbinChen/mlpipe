@@ -2,9 +2,9 @@ import os
 
 from django.core.management.base import BaseCommand, CommandError
 
-from durian.job_utils import JobRunner
-from durian.models import Pipe
-from durian.pipe_utils import PipeParser, PipeRunner
+from mlpipe.job_utils import JobRunner
+from mlpipe.models import Pipe
+from mlpipe.pipe_utils import PipeParser, PipeRunner
 
 
 class Command(BaseCommand):

@@ -19,4 +19,4 @@ parameters:
        type: int
        default: 1001
 
-cmd: python -m durian.module.split_file_by_line --ratio ratio --random_seed random_seed input_file output_1 output_2
+cmd: python -m mlpipe.module.split_file_by_line --ratio ratio --random_seed random_seed input_file output_1 output_2

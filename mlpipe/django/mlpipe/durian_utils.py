@@ -12,18 +12,18 @@ from time import gmtime, strftime
 import yaml
 from django.contrib.auth.models import Group, User
 
-from durian.models import Data, Job, JobDependency, Pipe
-from durian.settings import *
+from mlpipe.models import Data, Job, JobDependency, Pipe
+from mlpipe.settings import *
 
 
 SQL_GET_NEXT_EXCUTABLE_JOB = ''' 
-    SELECT * FROM durian_job j 
+    SELECT * FROM mlpipe_job j 
     WHERE j.status = 'created' 
         AND j.latched_to = "" 
         AND j.job_name not in 
         ( 
             SELECT job_name_tgt 
-            FROM durian_jobdependency 
+            FROM mlpipe_jobdependency 
             WHERE status = "created" 
             ) 
     '''

@@ -2,9 +2,9 @@ import os
 
 from django.core.management.base import BaseCommand, CommandError
 
-from durian.backend import *
-from durian.models import Pipe
-from durian.settings import *
+from mlpipe.backend import *
+from mlpipe.models import Pipe
+from mlpipe.settings import *
 
 
 class Command(BaseCommand):

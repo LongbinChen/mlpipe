@@ -11,7 +11,7 @@ def run(args):
 if __name__ == '__main__':
   parser = argparse.ArgumentParser()
   parser.add_argument( '--local_folder', default="/", type = str, help='the local directory')
-  parser.add_argument( 'output_folder', type=str, help=' the output durian folder')
+  parser.add_argument( 'output_folder', type=str, help=' the output mlpipe folder')
 
   args = parser.parse_args()
   run(args)

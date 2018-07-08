@@ -4,12 +4,12 @@ print find_packages(exclude=['mlpipe.django.mlpipe.migrations', 'mlpipe.django.m
 
 setup(
     name='mlpipe',
-    version='0.1.4',
+    version='0.1.7',
     author='Longbin Chen',
     author_email='lbchen@gmail.com',
-    packages=find_packages(exclude=['mlpipe.django.mlpipe.migrations', 'mlpipe.django.mlpipe.templatetags']),
+    packages=find_packages(exclude=['mlpipe.migrations', 'mlpipe.templatetags']),
     package_data={'':['*.yaml',]},
-    scripts=['mlpipe/django/manage.py',],
+    scripts=['bin/ml',],
     license='LICENSE.txt',
     url='https://github.com/LongbinChen/mlpipe',
     description='A toolkit to manage machine learning libraries.',

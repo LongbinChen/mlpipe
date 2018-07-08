@@ -12,9 +12,9 @@ import yaml
 from django.contrib.auth.models import Group, User
 from django.db import connection
 from django.utils import timezone
-from durian.durianutils import *
-from durian.models import Data, Job, JobDependency, Pipe
-from durian.settings import *
+from mlpipe.mlpipe_utils import *
+from mlpipe.models import Data, Job, JobDependency, Pipe
+from mlpipe.settings import *
 
 
 class JobRunner:
@@ -125,7 +125,7 @@ class JobRunner:
         link input files to job directory
         '''
         if local_storage:
-            storage_location = os.path.join(storage_path, file_hash)
+            storage_location = os.path.join(storage_directory, file_hash)
             current_location = os.path.join(self.job_dir, data_name)
             if not os.path.exists(storage_location):
                 print "============="
@@ -155,16 +155,16 @@ class JobRunner:
 
         if local_storage:
             # create storage directory
-            cmd = "mkdir -p %s" % storage_path
+            cmd = "mkdir -p %s" % storage_directory
             os.system(cmd)
-            storage_file_path = os.path.join(storage_path, file_hash)
+            storage_file_path = os.path.join(storage_directory, file_hash)
             if os.path.exists(storage_file_path):
                 cmd = "rm -r %s" % storage_file_path
                 self._run_command(cmd)
                 # shutil.rmtree(storage_file_path)
             cmd = "mv %s %s" % (os.path.join(self.job_dir, data_name), storage_file_path)
             self._run_command(cmd)
-            storage_file = os.path.join(storage_path, file_hash)
+            storage_file = os.path.join(storage_directory, file_hash)
             data_file = os.path.join(self.job_dir, data_name)
             symlink_force(storage_file, data_file)
             self.info("moved data from %s to %s and soft-linked is created . " % (storage_file, data_file))

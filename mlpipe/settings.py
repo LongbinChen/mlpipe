@@ -17,7 +17,7 @@ import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SETTING_FILE_DIR = os.path.abspath(__file__)
+SETTING_FILE_DIR = os.path.dirname(__file__)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'bootstrap3',
     'bootstrap_ui',
+    'mlpipe',
 ]
 
 MIDDLEWARE = [
@@ -152,22 +153,22 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 
-mlpipe_directory = "/home/mlpipe/"
+MLPIPE_ROOT="~/mlpipe/"
 
 #resource_directory =  BASE_DIR + "/../" + "resource/"
 
-resource_directory = '/home/ubuntu/workspace/mlpipe/resource'
-working_directory = os.path.join(mlpipe_directory, "working")
-cached_data_directory = os.path.join(mlpipe_directory, "cached_data")
+resource_directory = os.path.join(MLPIPE_ROOT, "apps")
+working_directory = os.path.join(MLPIPE_ROOT, "working")
+cached_data_directory = os.path.join(MLPIPE_ROOT, "cached_data")
 
 local_storage = True
 s3_storage = False
-storage_path = os.path.join(mlpipe_directory, "storage")
+storage_directory = os.path.join(MLPIPE_ROOT, "storage")
 
 run_local = True
 DJANGO_BOOTSTRAP_UI_THEME = 'bootswatch-cosmo'
 
-mlpipe_MACHINE_NAME = "unsetted"
+MLPIPE_MACHINE_NAME = "unsetted"
 
 
 CONN_MAX_AGE = None

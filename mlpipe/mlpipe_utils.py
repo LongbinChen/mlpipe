@@ -9,12 +9,11 @@ import types
 import uuid
 from time import gmtime, strftime
 
+import mlpipe_utils
 import yaml
 from django.contrib.auth.models import Group, User
-
 from mlpipe.models import Data, Job, JobDependency, Pipe
 from mlpipe.settings import *
-
 
 SQL_GET_NEXT_EXCUTABLE_JOB = ''' 
     SELECT * FROM mlpipe_job j 

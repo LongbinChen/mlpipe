@@ -127,7 +127,7 @@ class JobRunner:
         link input files to job directory
         '''
         if local_storage:
-            storage_location = os.path.join(storage_path, file_hash)
+            storage_location = os.path.join(storage_directory, file_hash)
             current_location = os.path.join(self.job_dir, data_name)
             if not os.path.exists(storage_location):
                 print "============="
@@ -157,16 +157,16 @@ class JobRunner:
 
         if local_storage:
             # create storage directory
-            cmd = "mkdir -p %s" % storage_path
+            cmd = "mkdir -p %s" % storage_directory
             os.system(cmd)
-            storage_file_path = os.path.join(storage_path, file_hash)
+            storage_file_path = os.path.join(storage_directory, file_hash)
             if os.path.exists(storage_file_path):
                 cmd = "rm -r %s" % storage_file_path
                 self._run_command(cmd)
                 # shutil.rmtree(storage_file_path)
             cmd = "mv %s %s" % (os.path.join(self.job_dir, data_name), storage_file_path)
             self._run_command(cmd)
-            storage_file = os.path.join(storage_path, file_hash)
+            storage_file = os.path.join(storage_directory, file_hash)
             data_file = os.path.join(self.job_dir, data_name)
             mlpipeutils.symlink_force(storage_file, data_file)
             self.info("moved data from %s to %s and soft-linked is created . " % (storage_file, data_file))
@@ -174,13 +174,14 @@ class JobRunner:
             self.info("non-local storage hasn't been implemented yet.")
 
     def _attach_or_copy_source_data(self, inputfile, filemd5, data_key):
-        if inputfile.                                                                                                                                                                                                                                                                       = os.path.join(resource_directory, inputfile.replace("file://", ""))
+        if inputfile.startswith("file://"):
+            filename = os.path.join(resource_directory, inputfile.replace("file://", ""))
             mlpipeutils.symlink_force(filename, os.path.join(self.job_dir, data_key))
             self.info("%s -> %s" % (data_key, filename))
             return True
 
         if inputfile.startswith("local://"):
-            filename = inputfile.replace("file:/", "")
+            filename = inputfile.replace("local:/", "")
             mlpipeutils.symlink_force(filename, os.path.join(self.job_dir, data_key))
             self.info("%s -> %s" % (data_key, filename))
             return True
@@ -199,7 +200,7 @@ class JobRunner:
 
     def _prepare_data(self, resource_link, data_name):
         if '://' in resource_link:
-            self._attach_or_copy_source_data(resource_link, get_md5(resource_link), data_name)
+            self._attach_or_copy_source_data(resource_link, mlpipeutils.get_md5(resource_link), data_name)
         elif resource_link in self.pipe_def["datafile"]:
             self._link_file_from_storage(self.pipe_def["datafile"][resource_link], data_name)
         else:
@@ -331,7 +332,7 @@ class JobRunner:
         self._create_working_directory()
 
         self.job.status = Job.RUNNING
-        self.job.machine_name = mlpipe_MACHINE_NAME
+        self.job.machine_name = MLPIPE_MACHINE_NAME
         self.job.save()
         job = Job.objects.get(job_name=self.job_name)
         self.job = job

@@ -12,12 +12,12 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         print "============================="
-        print "data_directory: %s " % mlpipe_directory
+        print "mlpipe_directory(ROOT): %s " % MLPIPE_ROOT
         print "    job_directory: %s " % working_directory
         print "    cache_directory: %s " % cached_data_directory
-        print "    storage_directory: %s " % storage_path
+        print "    storage_directory: %s " % storage_directory
         print "app_directory: %s" % resource_directory
-        print "You can config the settings by adding a file at :  %s" % SETTING_FILE_DIR.replace('settings.py', 'extra_settings.py')
-        print "You can also config the settings by update the file at:  %s" % SETTING_FILE_DIR
+        print "You can config the settings by adding a file at :  %s/extra_settings.py" % (SETTING_FILE_DIR )
+        print "You can also config the settings by update the file at:  %s/settings.py" % SETTING_FILE_DIR
         
 

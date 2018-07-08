@@ -1,11 +1,11 @@
 import argparse
 import json
 
-import durian.durianutils as durianutils
+import mlpipe.mlpipeutils as mlpipeutils
 import yaml
 
 
-class DurianBuildinJob:
+class BuildinJob:
     def _get_loop_parameters(self, loop_param):
         if (len(loop_param) == 0):
             return
@@ -49,7 +49,7 @@ class DurianBuildinJob:
             agg_job["input"][ip] = [templ["output"][ip] + "_" + j_h for j_h in self.all_job_hash]
         agg_job["output"] = templ["output"]
         agg_job["parameters"] = loop_job_conf["parameters"]
-        agg_job["module"] = "durian/module/find_min"
+        agg_job["module"] = "mlpipe/module/find_min"
         pipe["jobs"][agg_job_name] = agg_job
 
     def compile_pipe(self, pipe):

@@ -10,4 +10,4 @@ parameters:
     file:
         type: string
 
-cmd: kaggle competitions download -c competition -f file -p _tmp_download && mv _tmp_download/%(competition)s/%(file)s download_file
+cmd: kaggle competitions download -c competition -f file -p _tmp_download && mv _tmp_download/%(file)s download_file

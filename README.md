@@ -9,9 +9,6 @@ We are working on a Web UI to create/edit/maintain training process and visualiz
 
 ## Get started
 
-### Installation
-
-
 use sudo apt-get install to install following packages; please don't change the default admin name as root and remmeber the password for root. 
 
 ```
@@ -26,33 +23,13 @@ pip install mlpipe
 ```
 
 
-### Database (optional)
-By default, MLpipe uses sqlite for simplicity and  you don't need to install database
-
-However if you want to use mysql as the backend database, you also need to install mysql. 
-
-```
-sudo apt-get install mysql-server 
-```
-
 
 #### create mysql user mlusers with passwd mlusers
 run the following command to initialized the database
 
-
-
 ```
 ml init
 
-```
-
-run the following to create database and create user/group MLpipe
-
-```
-ml migrate
-ml init_MLpipe
-ml makemigrations MLpipe
-ml migrate MLpipe
 ```
 
 
@@ -66,12 +43,11 @@ ml config
 These are the directory to save intermedia data and download/cached datas. For some experiment, the file size might be very large so make sure you config a large enough directory. 
 
 
-You can create a file 'extra_settings.py' if you need to configure your own settings without changing the remote repo. See local_settings_sample.py regarding what you might want to configure.
+You can create a file 'extra_settings.py' if you need to configure your own settings without changing the remote repo. 
 
 ```
-vi django/MLpipe/extra_settings.py
+vi [path_to_mlpipe_library]/mlpipe/extra_settings.py
 ```
-
 
 ## Using MLpipe
 ### all the commands
@@ -101,30 +77,27 @@ ml runjob --job_id [job_id]
 ``` 
 
 
-## Concepts in MLpipe
-
-
+## Concepts
 
 ### App
    Each app is a directory contains subdirectories data, module and pipe. It is a collection of training data, training algorithm and pipelines. You can define an app by create a directory and mount to MLpipe. 
  
-   
-    
-   
 
 ### Data
 
 Data in MLpipe has two types, one is external data and one is intermedia data in the training process
 
-External Data is stored either at s3, or a file at git repo or a file downloadable from internet. Therefore we can represent a data as one of the following three format:
+External Data is stored either at s3, or a file at git repo or a file downloadable from internet, or a local file. Therefore we can represent a data as one of the following three format:
 
 ```
- s3://path/to/your/s3/file/test_room_nostopwords
- file://text_classification/data/train_data
- http://www.example.com/train.data.tar.gz
+ s3://path/to/your/s3/file/test_room_nostopwords     #aws s3 ; you need to config your s3.cfg with your aws credency
+ file://text_classification/data/train_data          #app's data file,  the format is file://[app_name]/data/[path_to_data_file] 
+ http://www.example.com/train.data.tar.gz            #http
+ local://home/users/data/train_data.tsv              #local disk
+
 ```
 
-MLpipe Daemon will automatically fetch and/or download data from s3, git repo or https
+MLpipe Daemon will automatically fetch and/or download data from s3, git repo or https, or local disk
 
 Intermedia Data are the output for one jobs and will be used as the input of other jobs in the same pipe. In the pipe defintion, they are represented using a unique data name in the pipe. See the pipe examples for more details. 
 
@@ -221,7 +194,22 @@ aws --configure
 s3cmd --configure
 ```
 
+### More 
+
+#### Database (optional)
+By default, MLpipe uses sqlite for simplicity and  you don't need to install database
+
+However if you want to use mysql as the backend database, you also need to install mysql. 
+
+```
+sudo apt-get install mysql-server 
+```
+
+
+
 ### about the authors
 MLpipe was created by @lilia when she was an intern at Houzz's research team in Summer 2017. Since then, @longbin, @xinai @yangli all contribute to MLpipe
   
+
+
 

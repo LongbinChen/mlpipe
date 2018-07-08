@@ -1,7 +1,7 @@
 import os
 
-from durian.models import Data, Job, JobDependency, Pipe
-from durian.settings import *
+from mlpipe.models import Data, Job, JobDependency, Pipe
+from mlpipe.settings import *
 
 
 class PipeDeleter:
@@ -56,7 +56,7 @@ class PipeDeleter:
 #        data = Data.objects.filter(data_name__startswith = pipe_name)
 #        for d in data:
 #            print('data db entry {}'.format(data_name))
-#            storage_file = os.path.join(storage_path, d.data_hash)
+#            storage_file = os.path.join(storage_directory, d.data_hash)
 #            print('    and its corresponding storage file {}'.format(storage_file))
 
         # delete pipe

@@ -12,8 +12,8 @@ from django.contrib.auth.models import Group, User
 from termcolor import colored
 
 import durianutils
-from durian.models import Data, Job, JobDependency, Pipe
-from durian.settings import *
+from mlpipe.models import Data, Job, JobDependency, Pipe
+from mlpipe.settings import *
 from JobRunner import JobRunner
 
 

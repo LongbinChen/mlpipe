@@ -69,7 +69,7 @@ class PipeDeleter(object):
 #        data = Data.objects.filter(data_name__startswith = pipe_name)
 #        for d in data:
 #            print('data db entry {}'.format(data_name))
-#            storage_file = os.path.join(storage_path, d.data_hash)
+#            storage_file = os.path.join(storage_directory, d.data_hash)
 #            print('    and its corresponding storage file {}'.format(storage_file))
 
         # delete pipe
@@ -269,7 +269,7 @@ class PipeParser:
         self.pp.pipe_def = json.dumps(pipe)
         self.pp.save()
         self.info(
-            "New Pipe is created  with %d. you can use command 'dr runpipe %d' to start running the pipe" %
+            "New Pipe is created  with %d. you can use command 'ml runpipe %d' to start running the pipe" %
             (self.pp.id, self.pp.id))
         return self.pp.id
 

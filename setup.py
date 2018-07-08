@@ -4,7 +4,7 @@ print find_packages(exclude=['mlpipe.django.mlpipe.migrations', 'mlpipe.django.m
 
 setup(
     name='mlpipe',
-    version='0.1.7',
+    version='0.1.9',
     author='Longbin Chen',
     author_email='lbchen@gmail.com',
     packages=find_packages(exclude=['mlpipe.migrations', 'mlpipe.templatetags']),

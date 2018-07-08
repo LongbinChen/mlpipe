@@ -28,7 +28,6 @@ fieldfile = FieldFile(None, FakeField, 'dummy.txt')
 
 class HomePageView(TemplateView):
     template_name = 'home.html'
-
     def get_context_data(self, **kwargs):
         context = super(HomePageView, self).get_context_data(**kwargs)
         messages.info(self.request, 'hello http://example.com')
@@ -156,7 +155,7 @@ def get_parameters(filename):
         try:
             y = yaml.load(stream)
             return y
-            #return render(request, join(BASE_DIR, 'durian/templates/param_form.html'), y)
+            #return render(request, join(BASE_DIR, 'mlpipe/templates/param_form.html'), y)
             #return JsonResponse(y, safe=False)
         except yaml.YAMLError as exc:
             print(exc)
@@ -206,4 +205,4 @@ def open_modal(request):
                     node_params["parameters"][param]["current"] = parameters["parameters"][param].get(u"default")
                     node_params["parameters"][param]["type"] = parameters["parameters"][param].get(u"type")
         print (node_id, node_params)
-        return render(request, join(BASE_DIR, 'durian/templates/param_form.html'), {"node_id": node_id, "params": node_params})
+        return render(request, join(BASE_DIR, 'mlpipe/templates/param_form.html'), {"node_id": node_id, "params": node_params})

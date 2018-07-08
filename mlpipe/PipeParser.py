@@ -6,7 +6,7 @@ import types
 import durianutils
 import yaml
 from django.contrib.auth.models import Group, User
-from durian.models import Data, Job, JobDependency, Pipe
+from mlpipe.models import Data, Job, JobDependency, Pipe
 from DurianBuildinJob import DurianBuildinJob
 
 
@@ -121,7 +121,7 @@ class PipeParser:
         self.pp.pipe_def = json.dumps(pipe)
         self.pp.save()
         self.info(
-            "New Pipe is created  with %d. you can use command 'dr runpipe %d' to start running the pipe" %
+            "New Pipe is created  with %d. you can use command 'ml runpipe %d' to start running the pipe" %
             (self.pp.id, self.pp.id))
         return self.pp.id
 

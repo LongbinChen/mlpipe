@@ -158,7 +158,7 @@ mlpipe_directory = "/home/mlpipe/"
 #resource_directory =  BASE_DIR + "/../" + "resource/"
 
 resource_directory = '/home/ubuntu/workspace/mlpipe/resource'
-working_directory = os.path.join(mlpipe_ndirectory, "working")
+working_directory = os.path.join(mlpipe_directory, "working")
 cached_data_directory = os.path.join(mlpipe_directory, "cached_data")
 
 local_storage = True

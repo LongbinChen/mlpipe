@@ -1,7 +1,4 @@
 from setuptools import setup, find_packages
-print find_packages(exclude=['mlpipe.django.mlpipe.migrations', 'mlpipe.django.mlpipe.templatetags'])
-
-
 setup(
     name='mlpipe',
     version='0.1.9',

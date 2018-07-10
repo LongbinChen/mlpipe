@@ -64,7 +64,7 @@ def get_config_by_path(file_path):
             for inc in config_data.get("includes", []):
                 inc_path = os.path.join(resource_directory, inc)
                 inc_data = yaml.load(open(inc_path))
-                print("file ", inc)
+                print(("file ", inc))
                 print(inc_data)
                 config_data['jobs'].update(inc_data.get('jobs', {}))
             print("final config data is")

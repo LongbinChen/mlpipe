@@ -2,7 +2,7 @@ from django.conf.urls import include, url
 from django.contrib import admin
 
 from . import views
-from .views import (DefaultFormByFieldView, DefaultFormsetView, DefaultFormView,
+from mlpipe.views import (DefaultFormByFieldView, DefaultFormsetView, DefaultFormView,
                    FormHorizontalView, FormInlineView, FormWithFilesView,
                    HomePageView, MiscView, PaginationView, getmodule)
 

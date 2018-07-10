@@ -11,9 +11,8 @@ from django.shortcuts import render
 from django.template.defaulttags import register
 from django.template.loader import render_to_string
 
-from .forms import ContactForm, FilesForm, ContactFormSet
-#from .models import Params
-from .settings import *
+from mlpipe.forms import ContactForm, FilesForm, ContactFormSet
+from mlpipe.settings import *
 from os import listdir
 from os.path import isfile, join, isdir, basename
 import yaml
@@ -107,7 +106,7 @@ def getDataByDirectory(dir):
   children = []
   for f in listdir(join(resource_directory, dir)):
     if isfile(join(resource_directory, dir, f)) and f.endswith(".yaml"):
-       print("file", f)
+       print(("file", f))
        typedef = "data"
        if "pipe" in dir:
            typedef = "pipe"
@@ -115,7 +114,7 @@ def getDataByDirectory(dir):
            typedef =  "module"
        children.append({'id':join(dir, f), 'text':f[:-5], 'type':typedef})
     if isdir(join(resource_directory, dir, f)):
-       print("dir", f)
+       print(("dir", f))
        children.append(getDataByDirectory(join(dir, f)))
   result["children"] = children
   return result
@@ -123,7 +122,7 @@ def getDataByDirectory(dir):
   
 def getmodule(request):
   print(resource_directory)
-  print(request.GET)
+  print((request.GET))
   result = getDataByDirectory('')
   print(result)
   return JsonResponse(result['children'], safe=False)

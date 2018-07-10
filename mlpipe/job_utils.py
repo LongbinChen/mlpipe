@@ -78,7 +78,7 @@ class JobRunner:
         if data_name.startswith("s3://"):
             self.info("s3: %s ----->>> %s" % (data_name, cache_data_path))
             self._run_command("s3cmd get %s %s " % (data_name, cache_data_path))
-            with open(cache_data_path + ".info", "w") as finfo:
+            with open(cache_data_path + ".info", "wb") as finfo:
                 finfo.write("downloaded time: " + strftime("%a, %d %b %Y %H:%M:%S +0000", gmtime()) + "\n")
                 self.info("downloaded time: " + strftime("%a, %d %b %Y %H:%M:%S +0000", gmtime()) + "\n")
                 finfo.write("data source: %s\n" % data_name)
@@ -86,7 +86,7 @@ class JobRunner:
         if data_name.startswith("http://") or data_name.startswith("https://"):
             self.info("https: %s ----->>> %s" % (data_name, cache_data_path))
             self._run_command("wget %s %s " % (data_name, os.path.join(self.job_dir, cache_data_path)))
-            with open(cache_data_path + ".info", "w") as finfo:
+            with open(cache_data_path + ".info", "wb") as finfo:
                 finfo.write("downloaded time" + strftime("%a, %d %b %Y %H:%M:%S +0000", gmtime()) + "\n")
             return True
         return False
@@ -336,12 +336,10 @@ class JobRunner:
         self.job.save()
         job = Job.objects.get(job_name=self.job_name)
         self.job = job
-        print("")
         self.info("Job id: %d" % self.job.id)
         self.info("Job name: %s" % self.job_name)
         self.info("Pipe name: %s " % self.job.pipe.pipe_name)
         self.info("Machine Running this job: %s " % self.job.machine_name)
-        print("")
         self.job_conf = json.loads(job.job_conf)
         self.pipe_def = json.loads(self.job.pipe.pipe_def)
 

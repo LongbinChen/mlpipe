@@ -35,8 +35,8 @@ def get_next_excutable_job():
         first_job = j
         count += 1
     if (first_job):
-        print("%d job can be executed now while job %d is picked to be run " % (
-            count, first_job.id))
+        print(("%d job can be executed now while job %d is picked to be run " % (
+            count, first_job.id)))
     return first_job
 
 
@@ -59,16 +59,16 @@ def get_config_by_path(file_path):
     with open(full_path, 'r') as f:
         try:
             config_data = yaml.load(f)
-            print "init config data is"
-            print config_data
+            print("init config data is")
+            print(config_data)
             for inc in config_data.get("includes", []):
                 inc_path = os.path.join(resource_directory, inc)
                 inc_data = yaml.load(open(inc_path))
-                print "file ", inc
-                print inc_data
+                print("file ", inc)
+                print(inc_data)
                 config_data['jobs'].update(inc_data.get('jobs', {}))
-            print "final config data is"
-            print config_data
+            print("final config data is")
+            print(config_data)
         except yaml.YAMLError as exc:
             print(exc)
             return None

@@ -23,7 +23,7 @@ class PipeDeleter(object):
         try:
             pipe = Pipe.objects.get(id = pipe_id)
         except Pipe.DoesNotExist:
-            print("pipe with %d  doesnt exist" % pipe_id)
+            print(("pipe with %d  doesnt exist" % pipe_id))
             return
         pipe_name = pipe.pipe_name
         jobs = Job.objects.filter(pipe = pipe_id)

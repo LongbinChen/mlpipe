@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 setup(
     name='mlpipe',
-    version='0.1.14',
+    version='0.1.15',
     author='Longbin Chen',
     author_email='lbchen@gmail.com',
     packages=find_packages(exclude=['mlpipe.migrations', 'mlpipe.templatetags']),

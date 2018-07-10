@@ -132,8 +132,8 @@ class JobRunner:
             if not os.path.exists(storage_location):
                 print("=============")
                 print("[ERROR]")
-                print("It seems the input file '%s', which is linked "%data_name)
-                print("to %s, doesn't exist. Please make sure the dependent jobs" % storage_location)
+                print(("It seems the input file '%s', which is linked "%data_name))
+                print(("to %s, doesn't exist. Please make sure the dependent jobs" % storage_location))
                 print("are completed") 
                 self._fail_job()
             mlpipeutils.symlink_force(storage_location, current_location)

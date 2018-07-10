@@ -1,4 +1,4 @@
-from __future__ import unicode_literals
+
 from django.core.files.storage import default_storage
 
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
@@ -13,7 +13,7 @@ from django.template.loader import render_to_string
 
 from .forms import ContactForm, FilesForm, ContactFormSet
 #from .models import Params
-from settings import *
+from .settings import *
 from os import listdir
 from os.path import isfile, join, isdir, basename
 import yaml
@@ -107,7 +107,7 @@ def getDataByDirectory(dir):
   children = []
   for f in listdir(join(resource_directory, dir)):
     if isfile(join(resource_directory, dir, f)) and f.endswith(".yaml"):
-       print "file", f
+       print("file", f)
        typedef = "data"
        if "pipe" in dir:
            typedef = "pipe"
@@ -115,17 +115,17 @@ def getDataByDirectory(dir):
            typedef =  "module"
        children.append({'id':join(dir, f), 'text':f[:-5], 'type':typedef})
     if isdir(join(resource_directory, dir, f)):
-       print "dir", f
+       print("dir", f)
        children.append(getDataByDirectory(join(dir, f)))
   result["children"] = children
   return result
   
   
 def getmodule(request):
-  print resource_directory
-  print request.GET
+  print(resource_directory)
+  print(request.GET)
   result = getDataByDirectory('')
-  print result
+  print(result)
   return JsonResponse(result['children'], safe=False)
 '''
    print(request.
@@ -173,13 +173,13 @@ def load_model(request):
         print (request)
 
 def open_modal(request):
-    print(request.method)
+    print((request.method))
     if request.method == 'POST':
         req_dict = json.loads(request.body)
-        filename = req_dict.get(u"filename")
+        filename = req_dict.get("filename")
         parameters = get_parameters(filename)
-        node_id = req_dict.get(u"id")
-        node_params = req_dict.get(u"params")
+        node_id = req_dict.get("id")
+        node_params = req_dict.get("params")
         #print(parameters)
         if "input" in parameters:
             if "input" not in node_params:
@@ -201,8 +201,8 @@ def open_modal(request):
             for param in parameters.get("parameters"):
                 if param not in node_params["parameters"]:
                     node_params["parameters"][param] = {}
-                    node_params["parameters"][param]["default"] = parameters["parameters"][param].get(u"default")
-                    node_params["parameters"][param]["current"] = parameters["parameters"][param].get(u"default")
-                    node_params["parameters"][param]["type"] = parameters["parameters"][param].get(u"type")
-        print (node_id, node_params)
+                    node_params["parameters"][param]["default"] = parameters["parameters"][param].get("default")
+                    node_params["parameters"][param]["current"] = parameters["parameters"][param].get("default")
+                    node_params["parameters"][param]["type"] = parameters["parameters"][param].get("type")
+        print((node_id, node_params))
         return render(request, join(BASE_DIR, 'mlpipe/templates/param_form.html'), {"node_id": node_id, "params": node_params})

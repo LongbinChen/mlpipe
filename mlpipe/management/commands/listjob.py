@@ -28,7 +28,7 @@ class Command(BaseCommand):
         else:
            all_job = Job.objects.filter(status = options["job_type"]).order_by("-created_at")[:limit]
         template = '{:<5}  {:<6}  {:<25}  {:<5}  {:<10}  {:<10}  {:<10}  {:<7}  {:<20}  {:<40}'
-        print(template.format("jobId", "pipeId", "jobName", "proId", "status", "start time", "duration", "latched", "Create at", "PipeName"))
+        print((template.format("jobId", "pipeId", "jobName", "proId", "status", "start time", "duration", "latched", "Create at", "PipeName")))
         for j in all_job:
            start_at_str = j.start_at.strftime('%H:%M:%S') if j.start_at != None else "None    "
            end_at_str = j.end_at.strftime('%H:%M:%S') if j.end_at != None else "None     "
@@ -47,4 +47,4 @@ class Command(BaseCommand):
              minutes, seconds = divmod(remainder, 60)
              dur_str = '%dhr %dm' % (hours, minutes)
            
-           print(template.format(j.id, j.pipe.id, j_jname[:25], str(j.process_id or ""), self.get_status_text(j.status), start_at_str, dur_str, j.latched_to or "", j.created_at.strftime("%m-%d-%Y %a %H:%M"), j_pname[-40:]))
+           print((template.format(j.id, j.pipe.id, j_jname[:25], str(j.process_id or ""), self.get_status_text(j.status), start_at_str, dur_str, j.latched_to or "", j.created_at.strftime("%m-%d-%Y %a %H:%M"), j_pname[-40:])))

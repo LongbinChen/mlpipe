@@ -13,4 +13,4 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         if "inputstring" in options: 
-            print mlpipeutils.get_md5(options["inputstring"])
+            print(mlpipeutils.get_md5(options["inputstring"]))

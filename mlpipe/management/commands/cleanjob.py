@@ -16,4 +16,4 @@ class Command(BaseCommand):
            cnt += 1
            j.status = Job.CANCELED
            j.save()
-        print(" %d jobs are canceled " % cnt)
+        print((" %d jobs are canceled " % cnt))

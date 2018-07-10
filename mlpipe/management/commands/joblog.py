@@ -17,7 +17,7 @@ class Command(BaseCommand):
         if "job_id" in options and options["job_id"] != -1:
             working_dir = os.path.join(working_directory, "job", str(options["job_id"]))
             logfile = os.path.join(working_dir, "__log__.txt")
-            print("log file is at : %s " % logfile) 
+            print(("log file is at : %s " % logfile)) 
             os.system("cat %s" % logfile)
         else:
             print("Please specify a job with a job id")

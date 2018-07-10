@@ -18,6 +18,6 @@ class Command(BaseCommand):
             j = Job.objects.get(id = options["job_id"])
             j.status = Job.CANCELED
             j.save()
-            print("Canceled job %d from status %s." %  (j.id, j.status))
+            print(("Canceled job %d from status %s." %  (j.id, j.status)))
         else:
             print("Please specify a job with a job id")

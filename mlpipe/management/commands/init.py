@@ -17,9 +17,9 @@ class Command(BaseCommand):
     def _ensure_dir(self, directory):
         if not os.path.exists(directory):
             os.makedirs(directory)
-            print("[init] directory %s created" % directory)
+            print(("[init] directory %s created" % directory))
         else:
-            print("[init] directory %s exists" % directory)
+            print(("[init] directory %s exists" % directory))
 
     def handle(self, *args, **options):
 

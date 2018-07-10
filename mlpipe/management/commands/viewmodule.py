@@ -19,7 +19,7 @@ class Command(BaseCommand):
            modules = get_modules()
            m = modules[options["module_id"]]
            m_yaml_file = os.path.join(resource_directory, m)
-           print "file at: %s " % m_yaml_file
-           print "file  content \n-----------------"
+           print("file at: %s " % m_yaml_file)
+           print("file  content \n-----------------")
            os.system("cat %s " % m_yaml_file)
-           print "-----------------\n end of yaml file"
+           print("-----------------\n end of yaml file")

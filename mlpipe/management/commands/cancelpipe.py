@@ -19,4 +19,4 @@ class Command(BaseCommand):
         if "pipe_id" in options and options["pipe_id"] != -1:
            self.cancel_pipe(options["pipe_id"])
         else:
-            print("no job can be found for pipe %d " % options["pipe_id"])
+            print(("no job can be found for pipe %d " % options["pipe_id"]))

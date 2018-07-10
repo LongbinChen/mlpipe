@@ -17,6 +17,6 @@ class Command(BaseCommand):
         if "job_id" in options and options["job_id"] != -1:
             working_dir = os.path.join(working_directory, "job", str(options["job_id"]))
             os.system("ls -l %s " % working_dir)
-            print("working directory at %s" % working_dir)
+            print(("working directory at %s" % working_dir))
         else:
             print("Please specify a job with a job id")

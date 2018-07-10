@@ -18,8 +18,8 @@ class Command(BaseCommand):
         if "job_id" in options and options["job_id"] != -1:
             j = Job.objects.get(id = options["job_id"])
             if j.status == Job.RUNNING:
-               print "Job %d (%s) is still running with process id %s." % ( j.id, j.job_name, j.process_id)
-               print "Please make sure the other process is killed before a new run. You can use --force to run the job if you are sure the job is not running. " 
+               print("Job %d (%s) is still running with process id %s." % ( j.id, j.job_name, j.process_id))
+               print("Please make sure the other process is killed before a new run. You can use --force to run the job if you are sure the job is not running. ") 
                if not options.get("force", False):
                  return 
             jr = JobRunner(j)

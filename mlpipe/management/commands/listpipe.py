@@ -19,5 +19,5 @@ class Command(BaseCommand):
           if (len(path) < 2): continue
           if path[-1] == "pipe" and (directory is None or path[-2] == directory):
              for file in files:
-                print os.path.join(path[-2], path[-1], file)
+                print(os.path.join(path[-2], path[-1], file))
    

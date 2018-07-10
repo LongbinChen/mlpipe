@@ -19,7 +19,7 @@ class Command(BaseCommand):
         app_name = options['app_name']
         if app_name == None:
             app_name = app_path.strip("/").split("/")[-1]
-        print "adding app %s to mlpipe as %s, the app path is at %s." % (
-                app_path, app_name, resource_directory)
+        print("adding app %s to mlpipe as %s, the app path is at %s." % (
+                app_path, app_name, resource_directory))
         if os.path.exists(app_path):
             os.symlink(app_path, os.path.join(resource_directory, app_name))

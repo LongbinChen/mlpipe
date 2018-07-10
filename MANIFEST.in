@@ -1,1 +1,4 @@
 recursive-include mlpipe *.yaml *.py
+include README.md
+include LICENSE
+

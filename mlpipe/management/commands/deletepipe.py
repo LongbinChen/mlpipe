@@ -14,10 +14,10 @@ class Command(BaseCommand):
          return [int(pipe_id)]
       if re.match("^[\d]+-[\d]+$", pipe_id):
          st, end = pipe_id.split("-")
-         return range(int(st), int(end) + 1)
+         return list(range(int(st), int(end) + 1))
       if re.match("^\d+(,\d+)+$", pipe_id):
          return [int(t) for t in pipe_id.split(",")]
-      print "can not recognize %s ." % (pipe_id)
+      print("can not recognize %s ." % (pipe_id))
       return []
 
     def add_arguments(self, parser):
@@ -29,9 +29,9 @@ class Command(BaseCommand):
         dry_run = options.get("dry_run", False)
         if "pipe_id" in options and options["pipe_id"] != '':
            r = self.parse_pipe_id(options["pipe_id"])
-           print "will delete pipe ", r
+           print("will delete pipe ", r)
            for pid in r:
                pd = PipeDeleter(pid, dry_run)
                pd.run()
         else:
-            print("no job can be found for pipe %d " % options["pipe_id"])
+            print(("no job can be found for pipe %d " % options["pipe_id"]))

@@ -27,23 +27,23 @@ class Command(BaseCommand):
 
     def create_dict(self, runpy, code_path):
         if not 'create_parser' in dir(runpy):
-            print   "Can not find create_parser in your python script." \
+            print("Can not find create_parser in your python script." \
                     "You need to refactorize your code, put the argparser" \
-                    "config in a function called create_parser"
+                    "config in a function called create_parser")
             return {}
         parser = runpy.create_parser()
         result = {'input':{}, 'output':{}, 'parameters':{}, 'cmd':""}
         app_name, module_name = self.get_app_module_name(code_path)
         cmd = "python -m %s.module.%s " % (app_name, module_name)
         for s in getattr(parser, '_actions'):
-            print vars(s)
+            print(vars(s))
             key_name = s.dest
             if key_name == 'help': continue
             info = {}
-            print key_name
+            print(key_name)
 
             if s.option_strings != None and len(s.option_strings) > 0:
-                print s.option_strings
+                print(s.option_strings)
                 cmd += " " +  s.option_strings[0] + " "
             cmd += " " + s.dest + " "
 
@@ -61,7 +61,7 @@ class Command(BaseCommand):
             elif 'param' in s.help:
                 result['parameters'][key_name] = info
             else:
-                print "Can not process argument %s, please include 'input', 'output', 'param' in the help message'. " % key_name
+                print("Can not process argument %s, please include 'input', 'output', 'param' in the help message'. " % key_name)
         result['cmd'] = cmd
         return result
 
@@ -73,12 +73,12 @@ class Command(BaseCommand):
             code_path = options.get('python_code_path')
             runpy = imp.load_source('my_module', code_path)
             result = self.create_dict(runpy, code_path)
-            print result
+            print(result)
             with open('data.yml', 'w') as outfile:
                 yaml.dump(result, outfile, default_flow_style=False)
         except SystemExit:
-            print "catch system exit error"
-        except Exception, e:
-            print "caught exception"
-            print str(e)
+            print("catch system exit error")
+        except Exception as e:
+            print("caught exception")
+            print(str(e))
 

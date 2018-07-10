@@ -9,7 +9,6 @@ import types
 import uuid
 from time import gmtime, strftime
 
-import mlpipe_utils
 import yaml
 from django.contrib.auth.models import Group, User
 from mlpipe.models import Data, Job, JobDependency, Pipe
@@ -36,8 +35,8 @@ def get_next_excutable_job():
         first_job = j
         count += 1
     if (first_job):
-        print "%d job can be executed now while job %d is picked to be run " % (
-            count, first_job.id)
+        print("%d job can be executed now while job %d is picked to be run " % (
+            count, first_job.id))
     return first_job
 
 
@@ -102,7 +101,7 @@ def get_main_file_md5(file_path):
     if os.path.exists(main_file_name):
         md5_py = md5(main_file_name)
     else:
-        print("can not find file %s " % (main_file_name))
+        print(("[Warning] can not find file %s " % (main_file_name)))
 
     md5_yaml = ""
     yaml_file_name = get_full_path(file_path)
@@ -111,7 +110,7 @@ def get_main_file_md5(file_path):
     if os.path.exists(yaml_file_name):
         md5_yaml = md5(yaml_file_name)
     else:
-        print("can not find file %s " % (yaml_file_name))
+        print(("[Warning] can not find file %s " % (yaml_file_name)))
 
     return md5_py + "." + md5_yaml
 
@@ -119,7 +118,7 @@ def get_main_file_md5(file_path):
 def symlink_force(target, link_name):
     try:
         os.symlink(target, link_name)
-    except OSError, e:
+    except OSError as e:
         if e.errno == errno.EEXIST:
             os.remove(link_name)
             os.symlink(target, link_name)
@@ -130,7 +129,7 @@ def symlink_force(target, link_name):
 def hardlink_force(target, link_name):
     try:
         os.link(target, link_name)
-    except OSError, e:
+    except OSError as e:
         if e.errno == errno.EEXIST:
             os.remove(link_name)
             os.link(target, link_name)

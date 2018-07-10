@@ -37,7 +37,7 @@ class BuildinJob:
             new_job_name = loop_job_name + "_" + job_h
             self.all_job_hash.append(job_h)
             print(job_conf)
-            for ko in job_conf["output"].keys():
+            for ko in list(job_conf["output"].keys()):
                 job_conf["output"][ko] += "_" + job_h
             pipe['jobs'][new_job_name] = job_conf
         # create an aggregating job

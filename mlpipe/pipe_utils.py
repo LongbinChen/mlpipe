@@ -23,7 +23,7 @@ class PipeDeleter(object):
         try:
             pipe = Pipe.objects.get(id = pipe_id)
         except Pipe.DoesNotExist:
-            print "pipe with %d  doesnt exist" % pipe_id
+            print("pipe with %d  doesnt exist" % pipe_id)
             return
         pipe_name = pipe.pipe_name
         jobs = Job.objects.filter(pipe = pipe_id)
@@ -34,23 +34,23 @@ class PipeDeleter(object):
         for j in jobs:
             if j.status == Job.RUNNING:
                 has_running = True
-                print('Please cancel or complete the running job {} before deleting this pipe.'.format(j.id))
+                print(('Please cancel or complete the running job {} before deleting this pipe.'.format(j.id)))
             same_jobs = Job.objects.filter(job_hash = j.job_hash)
             for sj in same_jobs:
                 if sj.status == Job.RUNNING:
                     has_running = True
-                    print('Please cancel or complete the running job {}, which is the same as job {}, before deleting this pipe.'.format(sj.id, j.id))
+                    print(('Please cancel or complete the running job {}, which is the same as job {}, before deleting this pipe.'.format(sj.id, j.id)))
         if has_running:
             return
 
         # delete jobs
         for j in jobs:
             job_id = j.id
-            print('job db entry {}'.format(job_id))
+            print(('job db entry {}'.format(job_id)))
             if not dry_run:
                 j.delete()
             job_working_directory = os.path.join(working_directory, 'job', str(job_id))
-            print('    and its corresponding working directory {}'.format(job_working_directory))
+            print(('    and its corresponding working directory {}'.format(job_working_directory)))
             if not dry_run:
                 cmd = 'rm -r {}'.format(job_working_directory)
                 os.system(cmd)
@@ -61,7 +61,7 @@ class PipeDeleter(object):
         # delete job dependencies
         job_deps = JobDependency.objects.filter(job_name_tgt__in = job_names)
         for jd in job_deps:
-            print('job dependency db entry from {} to {}'.format(jd.job_name_src, jd.job_name_tgt))
+            print(('job dependency db entry from {} to {}'.format(jd.job_name_src, jd.job_name_tgt)))
             if not dry_run:
                 jd.delete()
 
@@ -73,7 +73,7 @@ class PipeDeleter(object):
 #            print('    and its corresponding storage file {}'.format(storage_file))
 
         # delete pipe
-        print('pipe db entry {}.'.format(pipe_id))
+        print(('pipe db entry {}.'.format(pipe_id)))
         if not dry_run:
             pipe.delete()
 
@@ -135,9 +135,9 @@ class PipeRunner(object):
                     jr = JobRunner(j)
                     if (dry_run):
                         if not self._is_job_completed(j):
-                            print("job %d %s" % (j.id, j.job_name))
+                            print(("job %d %s" % (j.id, j.job_name)))
                         else:
-                            print("job %d %s [%s]" % (j.id, j.job_name, colored('Completed', 'green')))
+                            print(("job %d %s [%s]" % (j.id, j.job_name, colored('Completed', 'green'))))
                     else:
                         if not self._is_job_completed(j):
                             jr.run()
@@ -176,11 +176,11 @@ class PipeParser:
             print(msg_str)
 
     def _validate_pipe(self):
-        self.job_keys = [k for k in self.pipe['jobs'].keys() if 'module' in self.pipe["jobs"][k]
+        self.job_keys = [k for k in list(self.pipe['jobs'].keys()) if 'module' in self.pipe["jobs"][k]
                          and 'template' not in self.pipe["jobs"][k]]
         # first check if the outputs are unique
         for j in self.job_keys:
-            for k, v in self.pipe["jobs"][j]['output'].items():
+            for k, v in list(self.pipe["jobs"][j]['output'].items()):
                 if v in self.output_map:
                     self.info("ERROR, duplicate name of outputs for job %s and %s" % (self.output_map[v], j))
                     return False
@@ -202,10 +202,10 @@ class PipeParser:
 
     def _generate_dependency_pairs(self):
         for i in self.job_list:
-            for k, v in self.pipe["jobs"][i]['input'].items():
+            for k, v in list(self.pipe["jobs"][i]['input'].items()):
                 if '::' in v:
                     continue
-                if not isinstance(v, types.ListType):
+                if not isinstance(v, list):
                     v = [v]
                 for va in v:
                     if va in self.output_map:
@@ -241,7 +241,7 @@ class PipeParser:
         done_job = {}
         while cnt < job_cnt:
             # find a job without dependency
-            for k, v in job_it_depends.items():
+            for k, v in list(job_it_depends.items()):
                 if (len(v) == 0) and (k not in done_job):
                     # remove depends on k
                     for j1 in job_depends_on_it[k]:
@@ -279,7 +279,7 @@ class PipeParser:
         input_name_conf = job_conf["input"][input_name]
         concat_name = ""
         is_data_by_config = module_conf["input"].get("datafile", False)
-        if not isinstance(input_name_conf, types.ListType):
+        if not isinstance(input_name_conf, list):
             input_name_conf = [input_name_conf]
         for inn in input_name_conf:
             if self.is_data_file.get(
@@ -302,18 +302,18 @@ class PipeParser:
         info_list.append(module_name)
         code_check_sum = mlpipeutils.get_main_file_md5(module_name)
         info_list.append(code_check_sum)
-        inputs_sorted = job_conf["input"].keys()
+        inputs_sorted = list(job_conf["input"].keys())
         inputs_sorted.sort()
         for inp in inputs_sorted:
             input_data_name = job_conf["input"][inp]
-            if not isinstance(input_data_name, types.ListType):
+            if not isinstance(input_data_name, list):
                 input_data_name = [input_data_name]
             for idn in input_data_name:
                 if "://" in idn:
                     self.data_hash[idn] = mlpipeutils.get_md5(idn)
                 info_list.append(self.data_hash.get(idn, idn))
         param_conf = job_conf.get("parameters", {})
-        param_sorted = param_conf.keys()
+        param_sorted = list(param_conf.keys())
         param_sorted.sort()
         for p in param_sorted:
             info_list.append(str(param_conf[p]))
@@ -322,7 +322,7 @@ class PipeParser:
         job_hash = mlpipeutils.get_md5("\t".join(info_list))
         self._update_job_hash(job, job_hash)
 
-        outputs_sorted = job_conf["output"].keys()
+        outputs_sorted = list(job_conf["output"].keys())
         outputs_sorted.sort()
         for o in outputs_sorted:
             output_data_name = job_conf["output"][o]

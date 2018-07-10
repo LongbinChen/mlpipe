@@ -97,15 +97,15 @@ class JobRunner:
 
     def _create_default_config_file(self):
         self.default_config_file = os.path.join(self.job_dir, "_default_config")
-        for inp, v in self.job_conf["input"].items():
-            if isinstance(v, types.ListType):
+        for inp, v in list(self.job_conf["input"].items()):
+            if isinstance(v, list):
                 for i, dv in enumerate(v):
                     self.job_conf["input"][inp][i] = self.pipe_def['datafile'][dv]
             else:
                 self.job_conf["input"][inp] = self.pipe_def['datafile'][v]
 
-        for inp, v in self.job_conf["output"].items():
-            if isinstance(v, types.ListType):
+        for inp, v in list(self.job_conf["output"].items()):
+            if isinstance(v, list):
                 for i, dv in enumerate(v):
                     self.job_conf["output"][inp][i] = self.pipe_def['datafile'][dv]
             else:
@@ -130,17 +130,17 @@ class JobRunner:
             storage_location = os.path.join(storage_directory, file_hash)
             current_location = os.path.join(self.job_dir, data_name)
             if not os.path.exists(storage_location):
-                print "============="
-                print "[ERROR]"
-                print "It seems the input file '%s', which is linked "%data_name
-                print "to %s, doesn't exist. Please make sure the dependent jobs" % storage_location
-                print "are completed" 
+                print("=============")
+                print("[ERROR]")
+                print("It seems the input file '%s', which is linked "%data_name)
+                print("to %s, doesn't exist. Please make sure the dependent jobs" % storage_location)
+                print("are completed") 
                 self._fail_job()
             mlpipeutils.symlink_force(storage_location, current_location)
             self.info("%s -> %s " % (data_name, storage_location))
 
     def _remove_output_softlink(self):
-        for data_name, data_hash in self.job_conf["output"].items():
+        for data_name, data_hash in list(self.job_conf["output"].items()):
             output_file = os.path.join(self.job_dir, data_name)
             if os.path.islink(output_file):
                 os.unlink(output_file)
@@ -210,18 +210,18 @@ class JobRunner:
     def _prepare_data_to_working_directory(self):
         self.current_task = "Data"
         self.info("--- Preparing Job Data : %s --- " % (self.job_dir))
-        for d, v in self.job_conf["input"].items():
-            if not isinstance(v, types.ListType):
+        for d, v in list(self.job_conf["input"].items()):
+            if not isinstance(v, list):
                 self._prepare_data(v, d)
             else:
                 for di, dv in enumerate(v):
                     data_name = "%s_%d" % (d, di)
                     self._prepare_data(dv, data_name)
-        print ""
+        print("")
 
     def _copy_output_to_storage(self):
         self.info("Copy data to storage place")
-        for data_name, data_hash in self.job_conf["output"].items():
+        for data_name, data_hash in list(self.job_conf["output"].items()):
             self._move_file_to_storage(data_name, data_hash)
 
     def _translate_data_name(self, pipe_name, dn):
@@ -257,7 +257,7 @@ class JobRunner:
         trans_flds = []
         for f in flds:
             if "input" in self.module and f in self.job_conf["input"]:
-                if isinstance(self.job_conf["input"][f], types.ListType):
+                if isinstance(self.job_conf["input"][f], list):
                     for fi, fv in enumerate(self.job_conf["input"][f]):
                         data_name = "%s_%d" % (f, fi)
                         trans_flds.append(data_name)
@@ -308,7 +308,7 @@ class JobRunner:
                 self.job.process_id = None
                 self.job.save()
 
-            except Exception, e:
+            except Exception as e:
                 connection.close()
                 self.info(str(e))
                 self.job_status = Job.FAILED
@@ -336,12 +336,12 @@ class JobRunner:
         self.job.save()
         job = Job.objects.get(job_name=self.job_name)
         self.job = job
-        print ""
+        print("")
         self.info("Job id: %d" % self.job.id)
         self.info("Job name: %s" % self.job_name)
         self.info("Pipe name: %s " % self.job.pipe.pipe_name)
         self.info("Machine Running this job: %s " % self.job.machine_name)
-        print ""
+        print("")
         self.job_conf = json.loads(job.job_conf)
         self.pipe_def = json.loads(self.job.pipe.pipe_def)
 
@@ -393,7 +393,7 @@ class mlpipeBuildinJob:
             new_job_name = loop_job_name + "_" + job_h
             self.all_job_hash.append(job_h)
             print(job_conf)
-            for ko in job_conf["output"].keys():
+            for ko in list(job_conf["output"].keys()):
                 job_conf["output"][ko] += "_" + job_h
             pipe['jobs'][new_job_name] = job_conf
         # create an aggregating job

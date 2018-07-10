@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand, CommandError
 from mlpipe.models import Pipe
 from mlpipe.mlpipe_utils import mlpipeutils
-from mlpipe.JobRunner import JobRunner
+from mlpipe.job_utils import JobRunner
 import os
 
 class Command(BaseCommand):

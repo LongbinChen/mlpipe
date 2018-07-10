@@ -12,7 +12,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         print "============================="
-        print "mlpipe_directory(ROOT): %s " % MLPIPE_ROOT
+        print "mlpipe_directory(ROOT): %s " % MLPIPE_HOME
         print "    job_directory: %s " % working_directory
         print "    cache_directory: %s " % cached_data_directory
         print "    storage_directory: %s " % storage_directory

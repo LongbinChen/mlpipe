@@ -22,7 +22,23 @@ class Command(BaseCommand):
             print("[init] directory %s exists" % directory)
 
     def handle(self, *args, **options):
-        #create database
+
+        if os.environ.get('MLPIPE_HOME') == None:
+            print("Please set the environment variable 'MLPIPE_HOME' first.")
+            print("such as export MLPIPE_HOME=~/mlpipe  and put it in ~/.bash_profile")
+            return 
+        MLPIPE_HOME = os.environ.get('MLPIPE_HOME')
+
+        #create directories
+        self._ensure_dir(MLPIPE_HOME)
+        self._ensure_dir(working_directory)
+        self._ensure_dir(cached_data_directory)
+        self._ensure_dir(storage_directory)
+        self._ensure_dir(resource_directory)
+        with open(os.path.join(MLPIPE_HOME, "mlconfig.py"), "w") as fconfig:
+            fconfig.write("#please write the config here")
+
+
 
         print("[init] createing database ...")
         call_command('makemigrations', 'mlpipe')
@@ -36,13 +52,6 @@ class Command(BaseCommand):
         except:
             print("[init] user, group seems exist")
             
-        #create directories
-        self._ensure_dir(MLPIPE_ROOT)
-        self._ensure_dir(working_directory)
-        self._ensure_dir(cached_data_directory)
-        self._ensure_dir(storage_directory)
-        self._ensure_dir(resource_directory)
-
 
         #create core app
         app_path =  os.path.dirname(mlpipe_core.__file__)

@@ -12,8 +12,10 @@ https://docs.djangoproject.com/en/1.11/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.11/ref/settings/
 """
-
+import sys
 import os
+
+from os.path import dirname
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -104,12 +106,6 @@ DATABASES = {
 }
 
 '''
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
@@ -153,17 +149,21 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 
-MLPIPE_ROOT="~/mlpipe/"
+
+
+MLPIPE_HOME = os.environ.get('MLPIPE_HOME')
+if MLPIPE_HOME==None:
+    MLPIPE_HOME = "~/mlpipe/"
 
 #resource_directory =  BASE_DIR + "/../" + "resource/"
 
-resource_directory = os.path.join(MLPIPE_ROOT, "apps")
-working_directory = os.path.join(MLPIPE_ROOT, "working")
-cached_data_directory = os.path.join(MLPIPE_ROOT, "cached_data")
+resource_directory = os.path.join(MLPIPE_HOME, "apps")
+working_directory = os.path.join(MLPIPE_HOME, "working")
+cached_data_directory = os.path.join(MLPIPE_HOME, "cached_data")
 
 local_storage = True
 s3_storage = False
-storage_directory = os.path.join(MLPIPE_ROOT, "storage")
+storage_directory = os.path.join(MLPIPE_HOME, "storage")
 
 run_local = True
 DJANGO_BOOTSTRAP_UI_THEME = 'bootswatch-cosmo'
@@ -174,9 +174,22 @@ MLPIPE_MACHINE_NAME = "unsetted"
 CONN_MAX_AGE = None
 
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(MLPIPE_HOME, 'db.sqlite3'),
+    }
+}
+
+sys.path.append(MLPIPE_HOME)
+
 try:
-    from extra_settings import *
+    from mlconfig import *
 except ImportError:
+    print("[ERROR] can not import mlconfig")
     pass
+
+
+
 
 

@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand, CommandError
 from mlpipe.models import Pipe, Job
-from mlpipe.JobRunner import JobRunner
+from mlpipe.job_utils import JobRunner
 import os
 import datetime
 from django.utils import timezone

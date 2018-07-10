@@ -11,9 +11,10 @@ We are working on a Web UI to create/edit/maintain training process and visualiz
 
 use sudo apt-get install to install following packages; please don't change the default admin name as root and remmeber the password for root. 
 
+
+First setup the environment variable for the home folder
 ```
-sudo apt-get update
-sudo apt-get install python-pip python-dev libmysqlclient-dev
+EXPORT MLPIPE_HOME=~/mlpipe
 ```
 
 and run the following pip command to install it. Ideally you can create a virtual environment first and activate it.

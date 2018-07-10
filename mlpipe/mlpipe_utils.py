@@ -59,11 +59,21 @@ def get_config_by_path(file_path):
         full_path += ".yaml"
     with open(full_path, 'r') as f:
         try:
-            resource = yaml.load(f)
+            config_data = yaml.load(f)
+            print "init config data is"
+            print config_data
+            for inc in config_data.get("includes", []):
+                inc_path = os.path.join(resource_directory, inc)
+                inc_data = yaml.load(open(inc_path))
+                print "file ", inc
+                print inc_data
+                config_data['jobs'].update(inc_data.get('jobs', {}))
+            print "final config data is"
+            print config_data
         except yaml.YAMLError as exc:
             print(exc)
             return None
-    return resource
+    return config_data
 
 
 def get_full_path(file_path):

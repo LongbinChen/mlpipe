@@ -280,7 +280,7 @@ class JobRunner:
             trans_cmd = self._create_command()
             self.info("run command:'%s' at working directory: %s " % (trans_cmd, self.job_dir))
             try:
-                logfile = open(self.run_log_file, 'w')
+                logfile = open(self.run_log_file, 'wb')
                 proc = subprocess.Popen(trans_cmd, shell=True, cwd=self.job_dir,
                                         stdout=subprocess.PIPE, stderr=subprocess.STDOUT, bufsize=1)
                 self.info("process id is %d" % proc.pid)

@@ -1,7 +1,7 @@
 astroid==1.6.1
 backports.functools-lru-cache==1.5
 configparser==3.5.0
-Django==1.11.10
+Django==1.11.23
 django-bootstrap-ui==0.5.1
 django-bootstrap3==9.1.0
 django-tag-parser==2.1

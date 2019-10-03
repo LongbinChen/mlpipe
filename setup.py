@@ -28,7 +28,7 @@ setup(
         "mccabe==0.6.1",
         "pycodestyle==2.3.1",
         "pytz==2018.3",
-        "PyYAML==3.12",
+        "PyYAML==5.1",
         "singledispatch==3.4.0.3",
         "six==1.11.0",
         "termcolor==1.1.0",
